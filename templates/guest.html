@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View My Wedding Photos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h2 {
+            color: #2d3748;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .upload-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border: 2px dashed #cbd5e0;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(247, 250, 252, 0.8);
+        }
+
+        .upload-section:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-section.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-label {
+            color: #4a5568;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn,
+        .camera-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .upload-btn:hover,
+        .camera-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .camera-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .camera-section {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        #camera-stream {
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin: 1rem 0;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .capture-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .capture-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.3);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.3);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+            transform: translateX(-3px);
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 12px;
+            margin-top: 1rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: rgba(72, 187, 120, 0.1);
+            color: #2f855a;
+            border: 1px solid rgba(72, 187, 120, 0.2);
+        }
+
+        .status-error {
+            background: rgba(245, 101, 101, 0.1);
+            color: #c53030;
+            border: 1px solid rgba(245, 101, 101, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .header h2 {
+                font-size: 1.8rem;
+            }
+
+            .upload-btn,
+            .camera-btn {
+                display: block;
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .header h2 {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Hide elements initially */
+        #camera-stream,
+        #capture-btn,
+        #snapshot {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>📸 Find Your Photos</h2>
+            <p>Enter your event details and upload a photo of yourself to find all your wedding photos</p>
+        </div>
+
+        <form id="guest-form" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="event_id">Event ID</label>
+                <input type="text" id="event_id" name="event_id" placeholder="Enter your event ID" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter event password" required>
+            </div>
+
+            <div class="upload-section" id="upload-section">
+                <label class="upload-label">Upload Your Photo</label>
+                <p style="color: #718096; margin-bottom: 1rem; font-size: 0.9rem;">
+                    Choose a clear photo where your face is visible
+                </p>
+                
+                <input type="file" name="face" accept="image/*" id="face-upload" class="file-input">
+                <label for="face-upload" class="upload-btn">📁 Choose Photo</label>
+                <button type="button" id="start-camera-btn" class="camera-btn">📹 Use Camera</button>
+                
+                <div class="camera-section">
+                    <video id="camera-stream" width="320" height="240" autoplay></video>
+                    <canvas id="snapshot" width="320" height="240"></canvas>
+                    <br>
+                    <button type="button" id="capture-btn" class="capture-btn">📷 Capture Photo</button>
+                </div>
+                
+                <input type="file" name="face" id="face-capture" accept="image/*" style="display:none;">
+                <div id="preview-container"></div>
+            </div>
+
+            <button type="submit" class="submit-btn">🔍 Find My Photos</button>
+        </form>
+
+        <a href="{{ url_for('index') }}" class="back-link">← Back to Home</a>
+    </div>
+
+    <script>
+        const startCameraBtn = document.getElementById('start-camera-btn');
+        const cameraStream = document.getElementById('camera-stream');
+        const captureBtn = document.getElementById('capture-btn');
+        const snapshot = document.getElementById('snapshot');
+        const faceCapture = document.getElementById('face-capture');
+        const faceUpload = document.getElementById('face-upload');
+        const previewContainer = document.getElementById('preview-container');
+        const uploadSection = document.getElementById('upload-section');
+        let stream;
+
+        // File upload preview
+        faceUpload.onchange = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewContainer.innerHTML = `<img src="${e.target.result}" class="preview-image" alt="Preview">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // Drag and drop functionality
+        uploadSection.ondragover = function(e) {
+            e.preventDefault();
+            uploadSection.classList.add('dragover');
+        };
+
+        uploadSection.ondragleave = function(e) {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+        };
+
+        uploadSection.ondrop = function(e) {
+            e.preventDefault();
+            uploadSection.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                faceUpload.files = files;
+                faceUpload.onchange({target: {files: files}});
+            }
+        };
+
+        // Camera functionality
+        startCameraBtn.onclick = async function() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    cameraStream.srcObject = stream;
+                    cameraStream.style.display = 'block';
+                    captureBtn.style.display = 'inline-block';
+                    startCameraBtn.style.display = 'none';
+                    faceUpload.disabled = true;
+                } catch (error) {
+                    alert('Camera access denied or not available.');
+                }
+            } else {
+                alert('Camera not supported by this browser.');
+            }
+        };
+
+        captureBtn.onclick = function() {
+            snapshot.getContext('2d').drawImage(cameraStream, 0, 0, snapshot.width, snapshot.height);
+            snapshot.toBlob(function(blob) {
+                const file = new File([blob], "webcam.jpg", { type: "image/jpeg" });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                faceCapture.files = dataTransfer.files;
+                
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewContainer.innerHTML = `<img src="${e.target.result}" class="preview-image" alt="Captured Photo">`;
+                };
+                reader.readAsDataURL(blob);
+            }, 'image/jpeg');
+            
+            cameraStream.style.display = 'none';
+            captureBtn.style.display = 'none';
+            startCameraBtn.textContent = '📹 Retake Photo';
+            startCameraBtn.style.display = 'inline-block';
+            stream.getTracks().forEach(track => track.stop());
+            faceUpload.disabled = true;
+        };
+
+        // Form submission handling
+        document.getElementById('guest-form').onsubmit = function(e) {
+            if (faceCapture.files.length > 0) {
+                faceUpload.disabled = true;
+                faceUpload.removeAttribute('name');
+                faceCapture.style.display = 'none';
+                faceCapture.setAttribute('name', 'face');
+            } else {
+                faceCapture.disabled = true;
+                faceCapture.removeAttribute('name');
+                faceUpload.setAttribute('name', 'face');
+            }
+        };
+    </script>
+</body>
+</html>

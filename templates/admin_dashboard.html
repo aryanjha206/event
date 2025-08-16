@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-content h2 {
+            color: #2d3748;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-content p {
+            color: #718096;
+            font-size: 1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 101, 101, 0.3);
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .events-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .event-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover {
+            border-color: rgba(102, 126, 234, 0.3);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            transform: translateY(-2px);
+        }
+
+        .event-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .event-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .event-id {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .event-meta {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            border-radius: 20px;
+        }
+
+        .no-events {
+            text-align: center;
+            padding: 3rem;
+            color: #718096;
+        }
+
+        .no-events-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .no-events h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4a5568;
+        }
+
+        .no-events p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-actions {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .quick-actions h3 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .quick-actions-grid {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .event-actions {
+                justify-content: center;
+            }
+
+            .quick-actions-grid {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 1.5rem;
+            }
+
+            .header-content h2 {
+                font-size: 1.6rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .events-section {
+                padding: 1.5rem;
+            }
+
+            .event-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h2>⚙️ Admin Dashboard</h2>
+                <p>Manage wedding events and photo collections</p>
+            </div>
+            <div class="header-actions">
+                <a href="{{ url_for('create_event') }}" class="btn btn-primary">
+                    ➕ Create Event
+                </a>
+                <a href="{{ url_for('admin_logout') }}" class="btn btn-danger">
+                    🚪 Logout
+                </a>
+            </div>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">🎉</div>
+                <div class="stat-number">{{ events|length }}</div>
+                <div class="stat-label">Total Events</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">📸</div>
+                <div class="stat-number">{{ total_photos }}</div>
+                <div class="stat-label">Total Photos</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number">{{ active_users }}</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+        </div>
+
+        <div class="events-section">
+            <div class="section-header">
+                <h3 class="section-title">Wedding Events</h3>
+                <a href="{{ url_for('create_event') }}" class="btn btn-secondary btn-small">
+                    ➕ New Event
+                </a>
+            </div>
+
+            {% if events %}
+            <div class="events-grid">
+                {% for eid, pwd in events.items() %}
+                <div class="event-card">
+                    <div class="event-header">
+                        <div class="event-icon">💒</div>
+                        <div class="event-id">{{ eid }}</div>
+                    </div>
+                    <div class="event-meta">
+                        <div>🔒 Password Protected</div>
+                        <div>📅 Created Today</div>
+                        <div>📊 Status: Active</div>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-secondary btn-small" onclick="copyEventDetails('{{ eid }}', '{{ pwd }}')">
+                            📋 Copy Details
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="viewEventStats('{{ eid }}')">
+                            📊 View Stats
+                        </button>
+                        <form method="post" action="{{ url_for('delete_event', event_id=eid) }}" style="display:inline;" onsubmit="return confirmDelete('{{ eid }}');">
+                            <button type="submit" class="btn btn-danger btn-small">
+                                🗑️ Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-events">
+                <div class="no-events-icon">🎉</div>
+                <h3>No Events Created Yet</h3>
+                <p>Get started by creating your first wedding event!</p>
+                <a href="{{ url_for('create_event') }}" class="btn btn-primary">
+                    ➕ Create Your First Event
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="quick-actions-grid">
+                <a href="{{ url_for('create_event') }}" class="btn btn-primary btn-small">
+                    ➕ New Event
+                </a>
+                <a href="{{ url_for('upload') }}" class="btn btn-secondary btn-small">
+                    📤 Upload Photos
+                </a>
+                <a href="{{ url_for('guest') }}" class="btn btn-secondary btn-small">
+                    👥 Guest View
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyEventDetails(eventId, password) {
+            const details = `Event ID: ${eventId}\nPassword: ${password}`;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(details).then(() => {
+                    showNotification('Event details copied to clipboard!', 'success');
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(details);
+                });
+            } else {
+                fallbackCopyTextToClipboard(details);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showNotification('Event details copied to clipboard!', 'success');
+            } catch (err) {
+                showNotification('Failed to copy details', 'error');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function viewEventStats(eventId) {
+            showNotification(`Viewing stats for ${eventId} (feature coming soon)`, 'info');
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                font-weight: 600;
+                z-index: 1000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                max-width: 300px;
+                word-wrap: break-word;
+            `;
+            
+            // Set colors based on type
+            switch (type) {
+                case 'success':
+                    notification.style.background = 'rgba(72, 187, 120, 0.9)';
+                    notification.style.color = 'white';
+                    notification.textContent = '✅ ' + message;
+                    break;
+                case 'error':
+                    notification.style.background = 'rgba(245, 101, 101, 0.9)';
+                    notification.style.color = 'white';
+                    notification.textContent = '❌ ' + message;
+                    break;
+                default:
+                    notification.style.background = 'rgba(102, 126, 234, 0.9)';
+                    notification.style.color = 'white';
+                    notification.textContent = 'ℹ️ ' + message;
+            }
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function confirmDelete(eventId) {
+            return confirm(`Are you sure you want to delete event "${eventId}"? This will remove all associated photos and cannot be undone.`);
+        }
+
+        // Update stats dynamically (placeholder for future implementation)
+        function updateDashboardStats() {
+            // This function could fetch real-time stats via API
+            console.log('Updating dashboard stats...');
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDashboardStats();
+        });
+    </script>
+</body>
+</html>
